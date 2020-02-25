@@ -4,7 +4,14 @@ from database import db_session
 import threading
 import botthread
 import asyncio
+import os
 from flask_bootstrap import Bootstrap
+import json
+
+with open(f"../config.json", 'r') as f:
+    config = json.load(f)
+
+token = config.get('token')
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -13,7 +20,7 @@ app.config['SECRET_KEY'] = 'my_secret_key'
 
 async def start_bot():
     try:
-        await botthread.bot.start("token")
+        await botthread.bot.start(token)
     except Exception as e:
         exc = f'{type(e).__name__}: {e}'
         print(f'Failed to start bot:\n{exc}')
